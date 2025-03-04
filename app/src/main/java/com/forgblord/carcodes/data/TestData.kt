@@ -1,4 +1,4 @@
-package com.forgblord.carcodes
+package com.forgblord.carcodes.data
 
 val test: List<Pair<String, List<Int>>> = listOf(
     Pair("Калининградская область", listOf(39, 91, 139)),

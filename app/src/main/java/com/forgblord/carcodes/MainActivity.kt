@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val regionsRecyclerView: RecyclerView = findViewById(R.id.rv_regions)
-        val regionsListAdapter = RegionsListAdapter(test)
+        val regionsListAdapter = RegionsListAdapter()
 
         regionsRecyclerView.layoutManager = LinearLayoutManager(this)
         regionsRecyclerView.adapter = regionsListAdapter

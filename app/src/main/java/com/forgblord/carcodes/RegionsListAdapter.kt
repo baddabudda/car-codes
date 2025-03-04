@@ -7,25 +7,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.forgblord.carcodes.data.Region
+import com.forgblord.carcodes.data.regionsList
 
 class RegionsListAdapter(
-    private val codesDataset: List<Pair<String, List<Int>>>,
     private val recyclerPool: RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
 ): RecyclerView.Adapter<RegionsListAdapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val regionName: TextView
         val codesGrid: RecyclerView
         val context: Context
-        // val regionCodes: TextView
 
         init {
             regionName = view.findViewById(R.id.tv_region_name)
             codesGrid = view.findViewById(R.id.rv_region_codes)
             context = view.context
-            // regionCodes = view.findViewById(R.id.region_codes)
         }
     }
 
@@ -33,27 +29,20 @@ class RegionsListAdapter(
         val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_region_info, parent, false)
 
-        return  ViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return codesDataset.size
+        return regionsList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val codesGridAdapter = CodesGridAdapter(codesDataset[position].second)
+        val region: Region = regionsList[position]
+        val codesGridAdapter = CodesGridAdapter(region.codes)
 
-        holder.regionName.text = codesDataset[position].first
+        holder.regionName.text = region.name
         holder.codesGrid.layoutManager = GridLayoutManager(holder.context, 6)
         holder.codesGrid.adapter = codesGridAdapter
         holder.codesGrid.setRecycledViewPool(recyclerPool)
-
-        // holder.regionCodes.text = listToText(codesDataset[position].second)
     }
-
-/*
-    private fun listToText(codesList: List<Int>): CharSequence {
-        return codesList.joinToString()
-    }
-*/
 }

@@ -1,6 +1,6 @@
 package com.forgblord.carcodes.data
 
-data class Region(
+data class FederalSubject(
     val name: String,
     val codes: List<Int>
 )

@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val regionsRecyclerView: RecyclerView = findViewById(R.id.rv_regions)
-        val regionsListAdapter = RegionsListAdapter()
+        val subjectsRecyclerView: RecyclerView = findViewById(R.id.rv_subjects)
+        val subjectsListAdapter = FederalSubjectsListAdapter()
 
-        regionsRecyclerView.layoutManager = LinearLayoutManager(this)
-        regionsRecyclerView.adapter = regionsListAdapter
+        subjectsRecyclerView.layoutManager = LinearLayoutManager(this)
+        subjectsRecyclerView.adapter = subjectsListAdapter
     }
 }

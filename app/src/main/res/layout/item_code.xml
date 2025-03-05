@@ -23,5 +23,4 @@
         android:paddingHorizontal="8dp"
         tools:text="175"/>
 
-
 </com.google.android.material.card.MaterialCardView>

@@ -17,7 +17,7 @@
         android:paddingVertical="5dp">
 
         <TextView
-            android:id="@+id/tv_region_name"
+            android:id="@+id/tv_subject_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -30,16 +30,9 @@
             app:dividerColor="@android:color/darker_gray"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_region_codes"
+            android:id="@+id/rv_subject_codes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-<!--        <TextView-->
-<!--            android:id="@+id/region_codes"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textSize="16sp"-->
-<!--            tools:text="77, 97, 99, 177, 197, 199, 777, 797, 799, 977"/>-->
 
     </LinearLayout>
 

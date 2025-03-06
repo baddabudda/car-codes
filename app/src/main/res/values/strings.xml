@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Car codes</string>
+
+    <string name="menu_item_search">Search</string>
+    <string name="menu_item_sort">Sort by</string>
+    <string name="menu_subitem_sort_by_subject">by subject</string>
+    <string name="menu_subitem_sort_by_code">by code</string>
 </resources>

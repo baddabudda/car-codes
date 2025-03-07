@@ -1,7 +1,7 @@
 package com.forgblord.carcodes.data
 
 object SubjectDataProvider {
-    val subjectList: List<FederalSubject> = federalSubjectsList
+    var subjectList: List<FederalSubject> = federalSubjectsList
 
     private fun containsQuery(subject: FederalSubject, query: String): Boolean {
         if (subject.name.lowercase().contains(query)) {
@@ -33,5 +33,23 @@ object SubjectDataProvider {
         }
 
         return resultList
+    }
+
+    fun sort(order: SortOrder): List<FederalSubject> {
+        subjectList = when (order) {
+            SortOrder.BY_NAME -> {
+                subjectList.sortedBy { federalSubject ->
+                    federalSubject.name
+                }
+            }
+
+            SortOrder.BY_CODE -> {
+                subjectList.sortedBy { federalSubject ->
+                    federalSubject.codes[0]
+                }
+            }
+        }
+
+        return subjectList
     }
 }

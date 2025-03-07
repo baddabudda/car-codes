@@ -1,5 +1,6 @@
 package com.forgblord.carcodes
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.forgblord.carcodes.data.FederalSubject
+import com.forgblord.carcodes.data.SortOrder
 import com.forgblord.carcodes.data.SubjectDataProvider
 import com.google.android.material.appbar.MaterialToolbar
 
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         buildSubjectsRecyclerView()
         buildTopAppBarHandler()
+        restoreOrderPreference()
     }
 
     private fun buildSubjectsRecyclerView() {
@@ -50,7 +53,14 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.sort -> {
-                    // TODO: add sorting function
+                    true
+                }
+                R.id.sort_by_subject -> {
+                    startSort(SortOrder.BY_NAME)
+                    true
+                }
+                R.id.sort_by_code -> {
+                    startSort(SortOrder.BY_CODE)
                     true
                 }
                 else -> false
@@ -72,5 +82,27 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+    }
+
+    private fun startSort(order: SortOrder) {
+        val sortedList: List<FederalSubject> = SubjectDataProvider.sort(order)
+        subjectsListAdapter.updateList(sortedList)
+        saveOrderPreference(order)
+    }
+
+    private fun saveOrderPreference(order: SortOrder) {
+        val sharedPreference = this.getPreferences(Context.MODE_PRIVATE)
+        with (sharedPreference.edit()) {
+            putString("SORT_ORDER", order.name)
+            apply()
+        }
+    }
+
+    private fun restoreOrderPreference() {
+        val sharedPreference = this.getPreferences(Context.MODE_PRIVATE)
+        val orderCode = sharedPreference.getString("SORT_ORDER", SortOrder.BY_CODE.name)!!
+
+        val sortedList: List<FederalSubject> = SubjectDataProvider.sort(SortOrder.valueOf(orderCode))
+        subjectsListAdapter.updateList(sortedList)
     }
 }

@@ -29,6 +29,14 @@ class CodesGridAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.code.text = codes[position].toString()
+        holder.code.text = formatCode(codes[position].toString())
+    }
+
+    private fun formatCode(code: String): String {
+        if (code.length == 1) {
+            return "0$code"
+        }
+
+        return code
     }
 }

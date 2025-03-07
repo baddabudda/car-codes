@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.forgblord.carcodes.data.FederalSubject
-import com.forgblord.carcodes.data.federalSubjectsList
 
 class FederalSubjectsListAdapter(
-    private val recyclerPool: RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
+    private val recyclerPool: RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool(),
+    private var subjectsList: List<FederalSubject>
 ): RecyclerView.Adapter<FederalSubjectsListAdapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val subjectName: TextView
@@ -33,16 +33,21 @@ class FederalSubjectsListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return federalSubjectsList.size
+        return subjectsList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val subject: FederalSubject = federalSubjectsList[position]
+        val subject: FederalSubject = subjectsList[position]
         val codesGridAdapter = CodesGridAdapter(subject.codes)
 
         holder.subjectName.text = subject.name
         holder.codesGrid.layoutManager = GridLayoutManager(holder.context, 6)
         holder.codesGrid.adapter = codesGridAdapter
         holder.codesGrid.setRecycledViewPool(recyclerPool)
+    }
+
+    fun updateList(newSubjectsList: List<FederalSubject>) {
+        subjectsList = newSubjectsList
+        notifyDataSetChanged()
     }
 }

@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_SORT_ORDER = "SORT_ORDER"
+
+        val DEFAULT_SORT_ORDER = SortOrder.BY_CODE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         val orderCode = sharedPreference.getString(KEY_SORT_ORDER, SortOrder.BY_CODE.name)
 
         if (orderCode == null) {
-            return SortOrder.BY_CODE
+            return DEFAULT_SORT_ORDER
         }
 
         return SortOrder.valueOf(orderCode)

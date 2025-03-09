@@ -2,5 +2,5 @@ package com.forgblord.carcodes.data
 
 data class FederalSubject(
     val name: String,
-    val codes: List<Int>
+    val codes: List<String>
 )

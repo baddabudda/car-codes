@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/top_app_bar"
-            app:title="Car Codes"/>
+            app:title="@string/top_app_bar_title"/>
         
     </com.google.android.material.appbar.AppBarLayout>
 

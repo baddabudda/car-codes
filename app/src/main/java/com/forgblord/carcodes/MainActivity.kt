@@ -11,14 +11,20 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.forgblord.carcodes.data.FederalSubject
+import com.forgblord.carcodes.data.FederalSubjectsList
 import com.forgblord.carcodes.data.SortOrder
-import com.forgblord.carcodes.data.SubjectDataProvider
 import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var topAppbar: MaterialToolbar
     private lateinit var subjectsRecyclerView: RecyclerView
     private lateinit var subjectsListAdapter: FederalSubjectsListAdapter
+
+    companion object {
+        const val KEY_SORT_ORDER = "SORT_ORDER"
+
+        val DEFAULT_SORT_ORDER = SortOrder.BY_CODE
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +38,21 @@ class MainActivity : AppCompatActivity() {
 
         buildSubjectsRecyclerView()
         buildTopAppBarHandler()
-        restoreOrderPreference()
     }
 
     private fun buildSubjectsRecyclerView() {
         subjectsRecyclerView = findViewById(R.id.rv_subjects)
-        subjectsListAdapter = FederalSubjectsListAdapter(subjectsList=SubjectDataProvider.subjectList)
+
+        val data = restoreData()
+        subjectsListAdapter = FederalSubjectsListAdapter(subjectsList=data)
 
         subjectsRecyclerView.layoutManager = LinearLayoutManager(this)
         subjectsRecyclerView.adapter = subjectsListAdapter
+    }
+
+    private fun restoreData(): List<FederalSubject> {
+        val orderPreference = restoreOrderPreference()
+        return FederalSubjectsList.sort(orderPreference)
     }
 
     private fun buildTopAppBarHandler() {
@@ -77,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredList: List<FederalSubject> = SubjectDataProvider.search(newText)
+                val filteredList: List<FederalSubject> = FederalSubjectsList.search(newText)
                 subjectsListAdapter.updateList(filteredList)
                 return false
             }
@@ -85,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSort(order: SortOrder) {
-        val sortedList: List<FederalSubject> = SubjectDataProvider.sort(order)
+        val sortedList: List<FederalSubject> = FederalSubjectsList.sort(order)
         subjectsListAdapter.updateList(sortedList)
         saveOrderPreference(order)
     }
@@ -93,16 +105,19 @@ class MainActivity : AppCompatActivity() {
     private fun saveOrderPreference(order: SortOrder) {
         val sharedPreference = this.getPreferences(Context.MODE_PRIVATE)
         with (sharedPreference.edit()) {
-            putString("SORT_ORDER", order.name)
+            putString(KEY_SORT_ORDER, order.name)
             apply()
         }
     }
 
-    private fun restoreOrderPreference() {
+    private fun restoreOrderPreference(): SortOrder {
         val sharedPreference = this.getPreferences(Context.MODE_PRIVATE)
-        val orderCode = sharedPreference.getString("SORT_ORDER", SortOrder.BY_CODE.name)!!
+        val orderCode = sharedPreference.getString(KEY_SORT_ORDER, SortOrder.BY_CODE.name)
 
-        val sortedList: List<FederalSubject> = SubjectDataProvider.sort(SortOrder.valueOf(orderCode))
-        subjectsListAdapter.updateList(sortedList)
+        if (orderCode == null) {
+            return DEFAULT_SORT_ORDER
+        }
+
+        return SortOrder.valueOf(orderCode)
     }
 }

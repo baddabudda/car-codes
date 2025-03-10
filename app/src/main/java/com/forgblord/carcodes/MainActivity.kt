@@ -3,6 +3,7 @@ package com.forgblord.carcodes
 import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -22,8 +23,21 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_SORT_ORDER = "SORT_ORDER"
-
         val DEFAULT_SORT_ORDER = SortOrder.BY_CODE
+    }
+
+    private val backPressedCallback = object: OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val searchView = topAppbar.menu.findItem(R.id.search).actionView as SearchView
+
+            if (!searchView.isIconified) {
+                topAppbar.collapseActionView()
+            } else {
+                this.isEnabled = false
+                finish()
+            }
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         buildSubjectsRecyclerView()
         buildTopAppBarHandler()
+        handleBackPress()
     }
 
     private fun buildSubjectsRecyclerView() {
@@ -119,5 +134,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         return SortOrder.valueOf(orderCode)
+    }
+
+    private fun handleBackPress() {
+        this.onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 }
